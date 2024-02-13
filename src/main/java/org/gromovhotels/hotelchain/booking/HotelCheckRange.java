@@ -12,8 +12,8 @@ import java.time.LocalDate;
  */
 public record HotelCheckRange(@NonNull LocalDate checkInDate, @NonNull LocalDate checkOutDate) {
 
-    public boolean intersects(HotelCheckRange hotelCheckRange) {
-        return checkInBetweenIncluding(hotelCheckRange) || checkOutBetweenIncluding(hotelCheckRange);
+    public boolean intersects(HotelCheckRange otherRange) {
+        return !(this.checkOutDate.isBefore(otherRange.checkInDate) || this.checkInDate.isAfter(otherRange.checkOutDate));
     }
 
     @Override

@@ -1,26 +1,12 @@
 package org.gromovhotels.hotelchain;
 
-import org.gromovhotels.hotelchain.consoleapp.ConsoleApp;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import static asg.cliche.ShellFactory.createConsoleShell;
-import static org.gromovhotels.hotelchain.utils.shell.ShellExecutor.executeShellDrivenBy;
-
 @SpringBootApplication
-public class HotelchainApplication implements CommandLineRunner {
-
-	@Autowired
-	private ConsoleApp consoleApp;
-
+public class HotelchainApplication {
 	public static void main(String[] args) {
+		System.setProperty("java.awt.headless", "false");
 		SpringApplication.run(HotelchainApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) {
-		executeShellDrivenBy(consoleApp);
 	}
 }

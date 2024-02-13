@@ -21,7 +21,7 @@ public final class JsonUtils {
         try {
             return a.readValue(content, clazz);
         } catch (JsonProcessingException e) {
-            throw new ValidationException("Не удалось распарсить JSON-файл", e);
+            throw new ValidationException("Не удалось распарсить файл", e);
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.gromovhotels.hotelchain.room;
 
 import lombok.NonNull;
+import org.apache.commons.text.TextStringBuilder;
 
 import java.util.UUID;
 
@@ -12,4 +13,12 @@ import java.util.UUID;
  * @param id уникальный идентификатор комнаты
  * @param roomType тип комнаты
  */
-public record HotelRoom(@NonNull UUID id, @NonNull String roomType) {}
+public record HotelRoom(@NonNull UUID id, @NonNull String roomType) {
+    @Override
+    public String toString() {
+        return new TextStringBuilder()
+                .append("Идентификатор комнаты -> ").append(id).appendNewLine()
+                .append("Название комнаты -> ").append(roomType).appendNewLine()
+                .build();
+    }
+}

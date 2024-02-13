@@ -59,4 +59,12 @@ public final class HotelRoomRepository {
     public void clear() {
         hotelRooms.clear();
     }
+
+    public List<HotelRoom> findRoomsByIds(Set<UUID> roomIds) {
+        List<HotelRoom> foundRooms = getHotelRooms().stream().filter(room -> roomIds.contains(room.id())).toList();
+        if (foundRooms.size() != roomIds.size()) {
+            throw new IllegalArgumentException("Указны идентификаторы несуществующих комнат");
+        }
+        return foundRooms;
+    }
 }

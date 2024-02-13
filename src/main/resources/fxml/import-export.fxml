@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            layoutX="41.0" layoutY="12.928558349609375"
+            fx:controller="org.gromovhotels.hotelchain.graphicsapp.controllers.ImportExportController">
+<children>
+    <Button layoutY="4.071441650390625" mnemonicParsing="false" onAction="#importButtonClicked" style="-fx-background-color: #4867B3;" text="Импорт" textFill="WHITE" />
+    <Button layoutX="97.0" layoutY="4.071441650390625" mnemonicParsing="false" onAction="#exportButtonClicked" style="-fx-background-color: #4867B3;" text="Экспорт" textFill="WHITE" />
+    <Line endX="23.428573608398438" endY="-18.571441650390625" layoutX="55.0" layoutY="19.0" startX="23.428573608398438" startY="11.71429443359375" stroke="#4867b3" />
+</children>
+</AnchorPane>

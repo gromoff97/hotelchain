@@ -30,10 +30,19 @@ public class BookingCreationValidator implements ConstraintValidator<ValidatedBo
 
     @Override
     public boolean isValid(Object[] params, ConstraintValidatorContext context) {
-        UUID guestId = validateUUID(validateString(params[0]));
-        UUID hotelRoomId = validateUUID(validateString(params[1]));
-        LocalDate checkIn = validateIsAfterNow(validateLocalDate(validateString(params[2])));
-        LocalDate checkOut = validateIsAfterNow(validateLocalDate(validateString(params[3])));
+        validateNotNull(params[0], "UUID гостя");
+        validateNotNull(params[1], "UUID комнаты отеля");
+        validateNotNull(params[2], "Дата заезда");
+        validateNotNull(params[3], "Дата выезда");
+
+        UUID guestId = validateUUID(validateString(params[0], "UUID гостя"), "UUID гостя");
+        UUID hotelRoomId = validateUUID(validateString(params[1], "UUID комнаты отеля"), "UUID комнаты отеля");
+        LocalDate checkIn = validateIsAfterNow(validateLocalDate(validateString(params[2], "Дата заезда"), "Дата заезда"), "Дата заезда");
+        LocalDate checkOut = validateIsAfterNow(validateLocalDate(validateString(params[3], "Дата выезда"), "Дата выезда"), "Дата выезда");
+
+        if (params[4] != null) {
+            validateLocalDate(validateString(params[4], "Дата оплаты"), "Дата оплаты");
+        }
 
         guestService.getById(guestId.toString());
         HotelRoom room = roomService.getById(hotelRoomId.toString());
@@ -41,7 +50,7 @@ public class BookingCreationValidator implements ConstraintValidator<ValidatedBo
         HotelCheckRange range = new HotelCheckRange(checkIn, checkOut);
         List<HotelCheckRange> intersections = findHotelRangeIntersections(range, room);
         if (!intersections.isEmpty()) {
-            String messageFormat = "Указанные даты заезда и выезда (%s) не подходят.\nПересекающиеся с этой датой заезды:\n%s";
+            String messageFormat = "Для данной комнтаы указанные даты заезда и выезда (%s) не подходят.\nПересекающиеся с этой датой заезды:\n%s";
             throw new IllegalArgumentException(messageFormat.formatted(range, intersections));
         }
 

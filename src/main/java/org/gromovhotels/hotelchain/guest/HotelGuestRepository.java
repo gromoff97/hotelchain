@@ -27,12 +27,8 @@ public final class HotelGuestRepository {
         return hotelGuestArrayQueue.peek();
     }
 
-    public void updateGuestById(UUID uuid, HotelGuest hotelGuest) {
-        System.out.println("NOT IMPLEMENTED");
-    }
-
-    public void updateGuestByPassportNumber(String passportNumber, HotelGuest hotelGuest) {
-        System.out.println("NOT IMPLEMENTED");
+    public Optional<HotelGuest> findGuestById(UUID guestId) {
+        return getHotelGuests().stream().filter(hg -> hg.id().equals(guestId)).findAny();
     }
 
     public List<HotelGuest> getHotelGuests() {

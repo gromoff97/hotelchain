@@ -1,9 +1,11 @@
 package org.gromovhotels.hotelchain.utils;
 
+import lombok.NonNull;
 import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,8 +15,12 @@ import static org.gromovhotels.hotelchain.utils.JsonUtils.fromJsonTo;
 import static org.gromovhotels.hotelchain.utils.JsonUtils.toJsonString;
 
 public class FileUtils {
-    private static final Path TEMP_DIR_PATH = Paths.get(getProperty("user.home")).resolve("hotelchain");
+    public static final Path TEMP_DIR_PATH = Paths.get(getProperty("user.home")).resolve("hotelchain");
     public static final File DEFAULT_FILE = TEMP_DIR_PATH.resolve("saved_data.json").toFile();
+
+    public static URL getResourceUrl(String resourceName) {
+        return Thread.currentThread().getContextClassLoader().getResource(resourceName);
+    }
 
     @SneakyThrows
     public static void createDefaultFile() {
@@ -52,5 +58,10 @@ public class FileUtils {
         try (var w = new PrintWriter(file)) {
             w.print(content);
         }
+    }
+
+    @SneakyThrows
+    public static void deleteFile(@NonNull File file) {
+        org.apache.commons.io.FileUtils.delete(file);
     }
 }

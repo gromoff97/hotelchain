@@ -2,6 +2,7 @@ package org.gromovhotels.hotelchain.hotel;
 
 import org.gromovhotels.hotelchain.booking.BookingRepository;
 import org.gromovhotels.hotelchain.collections.list.CycledLinkedList;
+import org.gromovhotels.hotelchain.room.HotelRoom;
 import org.gromovhotels.hotelchain.room.HotelRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,10 +38,11 @@ public final class HotelRepository {
         findHotelById(hotelId).orElseThrow().roomIds().add(roomId);
     }
 
-    public void unlinkRoom(UUID roomId) {
-        findSingleOrThrow(roomRepository.getHotelRooms(), room -> room.id().equals(roomId));
+    public HotelRoom unlinkRoom(UUID roomId) {
+        var roomToUnlink = findSingleOrThrow(roomRepository.getHotelRooms(), room -> room.id().equals(roomId));
         Hotel hotel = findSingleOrThrow(getHotels(), h -> h.roomIds().contains(roomId));
         hotel.roomIds().remove(roomId);
+        return roomToUnlink;
     }
 
     public List<Hotel> getHotels() {
@@ -49,6 +51,14 @@ public final class HotelRepository {
 
     public void clear() {
         hotels.clear();
+    }
+
+    public Optional<Hotel> findByName(String name) {
+        return hotels.stream().filter(h -> h.name().equals(name)).findAny();
+    }
+
+    public Optional<Hotel> findByAddress(String address) {
+        return hotels.stream().filter(h -> h.address().equals(address)).findAny();
     }
 
     public Optional<Hotel> findHotelById(UUID uuid) {

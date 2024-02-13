@@ -6,34 +6,41 @@ import java.util.UUID;
 
 public final class ValidationUtils {
 
-    public static String validateString(Object obj) {
+    public static <T> T validateNotNull(T obj, String prefix) {
+        if (obj == null) {
+            throw new IllegalArgumentException("%s -> объект не должен отсутствовать или быть null".formatted(prefix));
+        }
+        return obj;
+    }
+
+    public static String validateString(Object obj, String prefix) {
         if (obj instanceof String s) {
             return s;
         }
-        throw new IllegalArgumentException("Объект должен быть строкой: '%s'".formatted(obj));
+        throw new IllegalArgumentException("%s -> объект должен быть строкой".formatted(prefix));
     }
 
-    public static LocalDate validateIsAfterNow(LocalDate localDate) {
+    public static LocalDate validateIsAfterNow(LocalDate localDate, String prefix) {
         LocalDate now = LocalDate.now();
         if (!localDate.isAfter(now)) {
-            throw new IllegalArgumentException("Дата '%s' должны быть позже '%s'".formatted(localDate, now));
+            throw new IllegalArgumentException("%s -> дата '%s' должны быть позже '%s'".formatted(prefix, localDate, now));
         }
         return localDate;
     }
 
-    public static LocalDate validateLocalDate(String str) {
+    public static LocalDate validateLocalDate(String str, String prefix) {
         try {
             return LocalDate.parse(str);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Строка не является датой (yyyy-MM-dd): '%s'".formatted(str));
+            throw new IllegalArgumentException("%s -> строка не является датой (yyyy-MM-dd): '%s'".formatted(prefix, str));
         }
     }
 
-    public static UUID validateUUID(String str) {
+    public static UUID validateUUID(String str, String prefix) {
         try {
             return UUID.fromString(str);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Строка не является UUID: '%s'".formatted(str));
+            throw new IllegalArgumentException("%s -> строка не является UUID: '%s'".formatted(prefix, str));
         }
     }
 

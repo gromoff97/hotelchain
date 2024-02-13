@@ -63,7 +63,7 @@ public final class ConsoleApp  {
                               @Param(name = "UUID комнаты") String hotelRoomUuid,
                               @Param(name = "Дата заезда в формате 'yyyy-MM-dd'") String checkIn,
                               @Param(name = "Дата выезда в формате 'yyyy-MM-dd'") String checkOut) {
-        bookingService.createBooking(guestUuid, hotelRoomUuid, checkIn, checkOut);
+        bookingService.createBooking(guestUuid, hotelRoomUuid, checkIn, checkOut, null);
     }
 
     @Command(name = "ОплатитьБронирование", abbrev = "pb")

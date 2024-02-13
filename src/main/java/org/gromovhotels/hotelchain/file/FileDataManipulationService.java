@@ -2,13 +2,18 @@ package org.gromovhotels.hotelchain.file;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import org.gromovhotels.hotelchain.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.gromovhotels.hotelchain.utils.FileUtils.*;
 
@@ -21,6 +26,8 @@ public final class FileDataManipulationService {
 
     @Autowired private ApplicationStateRepository applicationStateRepository;
 
+    private boolean saveOnExit = false;
+
     @PostConstruct
     private void importApplicationStateFromDefaultFile() {
         if (DEFAULT_FILE.exists()) {
@@ -32,8 +39,11 @@ public final class FileDataManipulationService {
 
     @PreDestroy
     private void exportCurrentApplicationStateToDefaultFile() throws IOException {
-        Files.deleteIfExists(DEFAULT_FILE.toPath());
-        exportCurrentApplicationStateTo(DEFAULT_FILE);
+        if (saveOnExit) {
+            System.out.println("Saving file: " + DEFAULT_FILE.toPath());
+            Files.deleteIfExists(DEFAULT_FILE.toPath());
+            exportCurrentApplicationStateTo(DEFAULT_FILE);
+        }
     }
 
     public void importApplicationStateFrom(String filePath) {
@@ -69,5 +79,9 @@ public final class FileDataManipulationService {
             throw new IllegalArgumentException("Файл не должен быть директорией -> " + file);
         }
         return readFileAs(ApplicationState.class, file);
+    }
+
+    public void setSaveOnExit(boolean bool) {
+        saveOnExit = bool;
     }
 }
